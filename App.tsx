@@ -1,9 +1,9 @@
-
 import React, { useState, Suspense, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, PerspectiveCamera, Stars } from '@react-three/drei';
 import ChristmasTree from './components/ChristmasTree';
 import PostProcessing from './components/PostProcessing';
+import Snow from './components/Snow'; // <--- 1. 导入 Snow 组件
 import { AppState } from './types';
 
 const App: React.FC = () => {
@@ -35,19 +35,16 @@ const App: React.FC = () => {
     <div className="relative w-full h-screen bg-black overflow-hidden font-['Inter']">
       {/* Overlay UI */}
       <div className="absolute top-0.5 left-0 w-full p-8 z-1000 pointer-events-none flex flex-col items-center">
-        {/* 修改后的标题代码 */}
-      <h1 
-        className="relative text-5xl md:text-7xl font-['Great_Vibes'] mb-6"
-      >
-        {/* 确保渐变覆盖整个文本区域 */}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-500 bg-[length:200%] bg-left animate-bg-scroll">
-          Merry Christmas 
-        </span>
-        {/* 添加发光阴影层防止边缘黑色溢出 */}
-        <span className="absolute inset-0 text-yellow-200/30 filter blur-md -z-10">
-          Merry Christmas 
-        </span>
-      </h1>
+        <h1 
+          className="relative text-5xl md:text-7xl font-['Great_Vibes'] mb-6"
+        >
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-500 bg-[length:200%] bg-left animate-bg-scroll">
+            Merry Christmas 
+          </span>
+          <span className="absolute inset-0 text-yellow-200/30 filter blur-md -z-10">
+            Merry Christmas 
+          </span>
+        </h1>
 
         <p className=" font-['Pacifico'] text-yellow-200/60 tracking-[0.3em] uppercase text-xs mb-8">
           TO WENDY
@@ -74,7 +71,7 @@ const App: React.FC = () => {
       <Canvas 
         shadows 
         dpr={[1, 2]}
-        style={{ position: 'relative', zIndex: 0 }} // 新增此行
+        style={{ position: 'relative', zIndex: 0 }}
       >
         <Suspense fallback={null}>
           <PerspectiveCamera makeDefault position={[0, 5, 22]} fov={60} />
@@ -94,6 +91,7 @@ const App: React.FC = () => {
           <Environment preset="lobby" />
           
           <ChristmasTree progress={progress} />
+          <Snow /> {/* <--- 2. 添加 Snow 组件到场景中 */}
           
           <PostProcessing />
         </Suspense>

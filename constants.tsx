@@ -44,6 +44,9 @@ export const PHOTO_RESOURCES = [
   "pictures/261_16.jpg",
 ];
 
+// High-fidelity Christmas background music
+export const MUSIC_URL = "https://cdn.pixabay.com/audio/2022/11/22/audio_03d964f48b.mp3";
+
 export const createGoldMaterial = () => new THREE.MeshStandardMaterial({
   color: COLORS.GOLD_BRIGHT,
   metalness: 1,
@@ -51,3 +54,4 @@ export const createGoldMaterial = () => new THREE.MeshStandardMaterial({
   emissive: COLORS.GOLD_DEEP,
   emissiveIntensity: 0.2,
 });
+
