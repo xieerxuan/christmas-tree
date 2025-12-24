@@ -3,12 +3,14 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, PerspectiveCamera, Stars } from '@react-three/drei';
 import ChristmasTree from './components/ChristmasTree';
 import PostProcessing from './components/PostProcessing';
-import Snow from './components/Snow'; // <--- 1. 导入 Snow 组件
+import Snow from './components/Snow';
+import HandDetector from './components/HandDetector'; // <--- 1. 导入
 import { AppState } from './types';
 
 const App: React.FC = () => {
   const [appState, setAppState] = useState<AppState>(AppState.FORMED);
   const [progress, setProgress] = useState(0);
+  const [isSnowing, setIsSnowing] = useState(false); // <--- 2. 新增下雪状态
 
   useEffect(() => {
     const target = appState === AppState.FORMED ? 1 : 0;
@@ -33,11 +35,22 @@ const App: React.FC = () => {
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden font-['Inter']">
-      {/* Overlay UI */}
+      {/* Hand Detector Logic */}
+      <HandDetector onSnowChange={setIsSnowing} /> {/* <--- 3. 放置检测器 */}
+
+      {/* Overlay UI (Status Indicator) */}
+      <div className="absolute top-4 right-4 z-50 pointer-events-none">
+        <div className={`flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm border transition-colors duration-500 ${isSnowing ? 'bg-blue-500/20 border-blue-400/50' : 'bg-gray-800/20 border-gray-600/30'}`}>
+          <div className={`w-2 h-2 rounded-full ${isSnowing ? 'bg-blue-400 animate-pulse' : 'bg-gray-500'}`} />
+          <span className={`text-xs font-bold tracking-widest uppercase ${isSnowing ? 'text-blue-200' : 'text-gray-500'}`}>
+            {isSnowing ? 'Snow Logic Active' : 'Show Open Hand'}
+          </span>
+        </div>
+      </div>
+
+      {/* ... (之前的 Overlay UI 保持不变) ... */}
       <div className="absolute top-0.5 left-0 w-full p-8 z-1000 pointer-events-none flex flex-col items-center">
-        <h1 
-          className="relative text-5xl md:text-7xl font-['Great_Vibes'] mb-6"
-        >
+        <h1 className="relative text-5xl md:text-7xl font-['Great_Vibes'] mb-6">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-500 bg-[length:200%] bg-left animate-bg-scroll">
             Merry Christmas 
           </span>
@@ -45,7 +58,6 @@ const App: React.FC = () => {
             Merry Christmas 
           </span>
         </h1>
-
         <p className=" font-['Pacifico'] text-yellow-200/60 tracking-[0.3em] uppercase text-xs mb-8">
           TO WENDY
         </p>
@@ -91,13 +103,14 @@ const App: React.FC = () => {
           <Environment preset="lobby" />
           
           <ChristmasTree progress={progress} />
-          <Snow /> {/* <--- 2. 添加 Snow 组件到场景中 */}
+          
+          {/* 4. 传递 active 状态 */}
+          <Snow active={isSnowing} />
           
           <PostProcessing />
         </Suspense>
       </Canvas>
 
-      {/* Bottom status text */}
       <div className="absolute bottom-4 left-0 w-full text-center text-[10px] text-yellow-500/30 uppercase tracking-[0.2em] pointer-events-none">
         Exquisite Craftsmanship &bull; Interactive 3D Experience &bull; &copy; 2024
       </div>
