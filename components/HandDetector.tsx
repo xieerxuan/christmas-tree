@@ -17,11 +17,17 @@ const HandDetector: React.FC<HandDetectorProps> = ({ onSnowChange }) => {
         "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
       );
 
+      // 简单判断是否为 iOS 设备
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+      
+      // 在 iOS 上强制使用 CPU，其他设备尝试 GPU
+      const delegateType = isIOS ? "CPU" : "GPU";
+
       gestureRecognizerRef.current = await GestureRecognizer.createFromOptions(vision, {
         baseOptions: {
           modelAssetPath:
             "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task",
-          delegate: "GPU"
+          delegate: delegateType
         },
         runningMode: "VIDEO",
         numHands: 1 // 我们只需要检测一只手

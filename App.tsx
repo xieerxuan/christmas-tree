@@ -38,22 +38,15 @@ const App: React.FC = () => {
       {/* Hand Detector Logic */}
       <HandDetector onSnowChange={setIsSnowing} /> {/* <--- 3. 放置检测器 */}
 
-      {/* Overlay UI (Status Indicator) */}
-      <div className="absolute top-4 right-4 z-50 pointer-events-none">
-        <div className={`flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm border transition-colors duration-500 ${isSnowing ? 'bg-blue-500/20 border-blue-400/50' : 'bg-gray-800/20 border-gray-600/30'}`}>
-          <div className={`w-2 h-2 rounded-full ${isSnowing ? 'bg-blue-400 animate-pulse' : 'bg-gray-500'}`} />
-          <span className={`text-xs font-bold tracking-widest uppercase ${isSnowing ? 'text-blue-200' : 'text-gray-500'}`}>
-            {isSnowing ? 'Snow Logic Active' : 'Show Open Hand'}
-          </span>
-        </div>
-      </div>
-
       {/* ... (之前的 Overlay UI 保持不变) ... */}
       <div className="absolute top-0.5 left-0 w-full p-8 z-1000 pointer-events-none flex flex-col items-center">
+          {/* 修改后的标题代码 */}
         <h1 className="relative text-5xl md:text-7xl font-['Great_Vibes'] mb-6">
+          {/* 确保渐变覆盖整个文本区域 */}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-500 bg-[length:200%] bg-left animate-bg-scroll">
             Merry Christmas 
           </span>
+          {/* 添加发光阴影层防止边缘黑色溢出 */}
           <span className="absolute inset-0 text-yellow-200/30 filter blur-md -z-10">
             Merry Christmas 
           </span>
